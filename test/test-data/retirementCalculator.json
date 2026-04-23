@@ -1,0 +1,28 @@
+{
+    "requiredFieldsOnly": {
+        "currentAge": "30",
+        "retirementAge": "68",
+        "currentAnnualIncome": "100000",
+        "retirementSavingsBalance": "500000",
+        "savingEachYearForRetirement": "20",
+        "rateOfIncreaseInSavings": "2"
+    },
+    "allFields": {
+        "currentAge": "30",
+        "retirementAge": "68",
+        "currentAnnualIncome": "100000",
+        "spouseAnnualIncome": "50000",
+        "retirementSavingsBalance": "500000",
+        "savingEachYearForRetirement": "20",
+        "rateOfIncreaseInSavings": "2",
+        "socialSecurityOverride": "1500"
+    },
+    "defaultCalculatorValues": {
+        "additionalIncome": "1000",
+        "retirementDuration": "30",
+        "retirementAnnualIncome": "5",
+        "preRetirementRoi": "6",
+        "postRetirementRoi": "4",
+        "expectedInflationRate": "2"
+    }
+}
