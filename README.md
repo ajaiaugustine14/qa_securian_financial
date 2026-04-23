@@ -52,14 +52,17 @@ Handles the main calculator form.
 | `open()` | Navigates to the calculator page and accepts cookie popup |
 | `fillBasicInfo(data)` | Fills all basic info fields (age, income, savings) |
 | `clickCalculate()` | Clicks the Calculate button |
+| `openAdjustDefaults()` | Opens the Adjust default values panel |
 | `selectIncludeSocialSecurityYes()` | Selects Yes for social security |
 | `selectIncludeSocialSecurityNo()` | Selects No for social security |
+| `selectSingleStatus()` | Selects Single marital status |
 | `selectMarriedStatus()` | Selects Married marital status |
 | `fillSocialSecurityOverride(amount)` | Enters a custom social security amount |
-| `openAdjustDefaults()` | Opens the Adjust default values panel |
-| `verifyRequiredFieldsAlertDisplayed()` | Asserts validation alert is shown |
+| `verifyRequiredFieldsAlertDisplayed()` | Asserts validation alert is shown with correct message |
 | `verifySocialSecurityOverrideVisible()` | Asserts SS override field is visible |
 | `verifySocialSecurityOverrideHidden()` | Asserts SS override field is hidden |
+| `verifySpouseIncomeVisible()` | Asserts spouse income field is visible |
+| `verifySpouseIncomeHidden()` | Asserts spouse income field is hidden |
 
 ### `defaultCalculatorValues.page.ts`
 Handles the Adjust default values panel.
@@ -67,11 +70,14 @@ Handles the Adjust default values panel.
 | Method | Description |
 |---|---|
 | `adjustDefaults(data)` | Fills additional income, duration, ROI fields |
-| `selectIncludeInflationYes()` | Selects Yes for inflation |
+| `selectIncludeInflationYes()` | Selects Yes for include inflation toggle |
+| `selectIncludeInflationNo()` | Selects No for include inflation toggle |
 | `setExpectedInflationRate(rate)` | Enters expected inflation rate |
 | `saveChanges()` | Clicks Save changes |
-| `verifyDefaultsDialogOpen()` | Asserts panel header is visible |
-| `verifyDefaultsDialogClosed()` | Waits for panel to close |
+| `verifyDefaultsDialogOpen()` | Asserts defaults panel header is visible |
+| `verifyDefaultsDialogClosed()` | Waits for defaults panel to close |
+| `verifyInflationRateVisible()` | Asserts expected inflation rate field is visible |
+| `verifyInflationRateHidden()` | Asserts expected inflation rate field is hidden |
 
 ### `preRetirementCalculatorResult.page.ts`
 Handles the results section.
@@ -88,11 +94,13 @@ File: `test/specs/retirementCalculatorTest.spec.ts`
 
 | # | Test | Description |
 |---|---|---|
-| 1 | User should not able to calculate without filling all required fields | Clicks Calculate with empty form and verifies validation alert |
-| 2 | Additional Social Security fields should display/hide based on toggle | Toggles SS Yes/No and verifies override field visibility |
-| 3 | User should be able to submit form with all required fields filled in | Fills required fields only and verifies results appear |
-| 4 | User should be able to submit form with all fields filled in | Fills all fields including spouse income and SS override |
-| 5 | User should be able to update default calculator values | Opens defaults panel, updates values, saves and verifies panel closes |
+| 1 | User should not able to calculate without filling all required fields | Clicks Calculate with empty form and verifies validation alert message |
+| 2 | Additional Social Security fields should display/hide based on Social Security benefits toggle | Toggles SS Yes/No and verifies override field visibility |
+| 3 | User should be able to submit form with all required fields filled in and see results | Fills required fields only and verifies results section appears |
+| 4 | User should be able to submit form with all fields filled in | Fills all fields including spouse income, married status and SS override |
+| 5 | Inflation rate field should display/hide based on include inflation toggle in default values | Opens defaults panel, toggles inflation Yes/No and verifies rate field visibility |
+| 6 | User should be able to update default calculator values | Opens defaults panel, fills all default values, saves and verifies panel closes |
+| 7 | User should be able to calculate with adjusted default values and see results | Full E2E — fills basic info, updates defaults with inflation, calculates and verifies results |
 
 ---
 
@@ -102,9 +110,13 @@ All test data is stored in `test/test-data/retirementCalculator.json`.
 
 ```json
 {
-  "requiredFieldsOnly": { ... },   // Used in test 3
-  "allFields": { ... },            // Used in test 4
-  "defaultCalculatorValues": { ... } // Used in test 5
+  "requiredFieldsOnly": { ... },       // Used in test 3
+  "allFields": { ... },                // Used in test 4
+  "defaultCalculatorValues": { ... },  // Used in test 6
+  "withAdjustedDefaults": {
+    "basicInfo": { ... },              // Used in test 7
+    "defaults": { ... }                // Used in test 7
+  }
 }
 ```
 
