@@ -6,6 +6,7 @@ class DefaultCalculatorValuesPage extends Page {
     get additionalIncome () { return $('#additional-income') }
     get retirementDuration () { return $('#retirement-duration') }
     get includeInflationYes () { return $('//*[@id="include-inflation-container"]/div/div[1]/label') }
+    get includeInflationNo () { return $('//*[@id="include-inflation-container"]/div/div[2]/label') }
     get expectedInflationRate () { return $('#expected-inflation-rate') }
     get retirementAnnualIncome () { return $('#retirement-annual-income') }
     get preRetirementRoi () { return $('#pre-retirement-roi') }
@@ -15,6 +16,21 @@ class DefaultCalculatorValuesPage extends Page {
     async selectIncludeInflationYes () {
         step('Select Include Inflation: Yes')
         await this.includeInflationYes.click()
+    }
+
+    async selectIncludeInflationNo () {
+        step('Select Include Inflation: No')
+        await this.includeInflationNo.click()
+    }
+
+    async verifyInflationRateVisible () {
+        step('Verify expected inflation rate field is visible')
+        await expect(this.expectedInflationRate).toBeDisplayed()
+    }
+
+    async verifyInflationRateHidden () {
+        step('Verify expected inflation rate field is hidden')
+        await expect(this.expectedInflationRate).not.toBeDisplayed()
     }
 
     async setExpectedInflationRate (rate: string) {

@@ -24,5 +24,23 @@
         "preRetirementRoi": "6",
         "postRetirementRoi": "4",
         "expectedInflationRate": "2"
+    },
+    "withAdjustedDefaults": {
+        "basicInfo": {
+            "currentAge": "35",
+            "retirementAge": "65",
+            "currentAnnualIncome": "90000",
+            "retirementSavingsBalance": "200000",
+            "savingEachYearForRetirement": "15",
+            "rateOfIncreaseInSavings": "3"
+        },
+        "defaults": {
+            "additionalIncome": "500",
+            "retirementDuration": "25",
+            "retirementAnnualIncome": "5",
+            "preRetirementRoi": "7",
+            "postRetirementRoi": "4",
+            "expectedInflationRate": "3"
+        }
     }
 }

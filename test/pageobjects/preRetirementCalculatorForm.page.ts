@@ -14,6 +14,7 @@ class RetirementCalculatorPage extends Page {
     // Social security
     get includeSocialSecurityYes () { return $('//*[@id="include-social-container"]/div/div[1]/label') }
     get includeSocialSecurityNo () { return $('//*[@id="include-social-container"]/div/div[2]/label') }
+    get singleStatus () { return $('//*[@id="marital-status-ul"]/div[1]/label') }
     get marriedStatus () { return $('//*[@id="marital-status-ul"]/div[2]/label') }
     get socialSecurityOverride () { return $('#social-security-override') }
 
@@ -46,9 +47,24 @@ class RetirementCalculatorPage extends Page {
         await this.includeSocialSecurityNo.click()
     }
 
+    async selectSingleStatus () {
+        step('Select marital status: Single')
+        await this.singleStatus.click()
+    }
+
     async selectMarriedStatus () {
         step('Select marital status: Married')
         await this.marriedStatus.click()
+    }
+
+    async verifySpouseIncomeVisible () {
+        step('Verify spouse annual income field is visible')
+        await expect(this.spouseAnnualIncome).toBeDisplayed()
+    }
+
+    async verifySpouseIncomeHidden () {
+        step('Verify spouse annual income field is hidden')
+        await expect(this.spouseAnnualIncome).not.toBeDisplayed()
     }
 
     async openAdjustDefaults () {

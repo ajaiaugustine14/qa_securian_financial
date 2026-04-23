@@ -36,6 +36,19 @@ describe('Securian Retirement Calculator', () => {
         await RetirementCalculatorResultPage.verifyResultsDisplayed()
     })
 
+    it('Inflation rate field should display/hide based on include inflation toggle in default values', async () => {
+        await RetirementCalculatorPage.openAdjustDefaults()
+        await DefaultCalculatorValuesPage.verifyDefaultsDialogOpen()
+
+        await DefaultCalculatorValuesPage.selectIncludeInflationYes()
+        await DefaultCalculatorValuesPage.verifyInflationRateVisible()
+
+        await DefaultCalculatorValuesPage.selectIncludeInflationNo()
+        await DefaultCalculatorValuesPage.verifyInflationRateHidden()
+
+        await DefaultCalculatorValuesPage.saveChanges()
+    })
+
     it('User should be able to update default calculator values', async () => {
         await RetirementCalculatorPage.openAdjustDefaults()
         await DefaultCalculatorValuesPage.verifyDefaultsDialogOpen()
@@ -44,5 +57,18 @@ describe('Securian Retirement Calculator', () => {
         await DefaultCalculatorValuesPage.setExpectedInflationRate(testData.defaultCalculatorValues.expectedInflationRate)
         await DefaultCalculatorValuesPage.saveChanges()
         await DefaultCalculatorValuesPage.verifyDefaultsDialogClosed()
+    })
+
+    it('User should be able to calculate with adjusted default values and see results', async () => {
+        await RetirementCalculatorPage.fillBasicInfo(testData.withAdjustedDefaults.basicInfo)
+        await RetirementCalculatorPage.openAdjustDefaults()
+        await DefaultCalculatorValuesPage.verifyDefaultsDialogOpen()
+        await DefaultCalculatorValuesPage.adjustDefaults(testData.withAdjustedDefaults.defaults)
+        await DefaultCalculatorValuesPage.selectIncludeInflationYes()
+        await DefaultCalculatorValuesPage.setExpectedInflationRate(testData.withAdjustedDefaults.defaults.expectedInflationRate)
+        await DefaultCalculatorValuesPage.saveChanges()
+        await DefaultCalculatorValuesPage.verifyDefaultsDialogClosed()
+        await RetirementCalculatorPage.clickCalculate()
+        await RetirementCalculatorResultPage.verifyResultsDisplayed()
     })
 })
