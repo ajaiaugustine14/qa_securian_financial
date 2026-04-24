@@ -1,5 +1,6 @@
 import url from 'node:url'
 import path from 'node:path'
+import fs from 'node:fs'
 import { ReportAggregator } from 'wdio-html-nice-reporter'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
@@ -147,9 +148,26 @@ export const config: Omit<WebdriverIO.Config, 'capabilities'> = {
             filename: 'report.html',
             reportTitle: 'Securian Retirement Calculator Test Report',
             browserName: 'chrome',
-            showInBrowser: true,
+            showInBrowser: false,
         })
         await reportAggregator.createReport()
+
+        const reportPath = path.resolve('reports/report.html')
+        const cssPath = path.resolve('reports/report-styles.css')
+
+        if (fs.existsSync(reportPath) && fs.existsSync(cssPath)) {
+            const html = fs.readFileSync(reportPath, 'utf8')
+            const css = fs.readFileSync(cssPath, 'utf8')
+            const inlined = html.replace(
+                '<link rel="stylesheet" href="report-styles.css">',
+                `<style>${css}</style>`
+            )
+            fs.writeFileSync(reportPath, inlined, 'utf8')
+            console.info('CSS inlined into report.html — report is now self-contained.')
+        }
+
+        const { exec } = await import('node:child_process')
+        exec(`cmd /c start "" "${reportPath}"`)
     },
     //
     // =====
