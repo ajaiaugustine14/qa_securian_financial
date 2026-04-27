@@ -84,8 +84,7 @@ class DefaultCalculatorValuesPage extends Page {
             if (options.include) {
                 await this.clickElement(this.includeInflationYes, 'Select Include Inflation: Yes')
                 if (options.rate) {
-                    step(`Enter expected inflation rate: ${options.rate}`)
-                    await this.expectedInflationRate.setValue(options.rate)
+                    await this.setFieldValue(this.expectedInflationRate, options.rate, `Enter expected inflation rate: ${options.rate}`)
                 }
             } else {
                 await this.clickElement(this.includeInflationNo, 'Select Include Inflation: No')
@@ -114,13 +113,11 @@ class DefaultCalculatorValuesPage extends Page {
     }) {
         try {
             step('Fill default calculator values')
-            await this.additionalIncome.click()
-            await browser.keys(['Control', 'a'])
-            await browser.keys(data.additionalIncome.split(''))
-            await this.retirementDuration.setValue(data.retirementDuration)
-            await this.retirementAnnualIncome.setValue(data.retirementAnnualIncome)
-            await this.preRetirementRoi.setValue(data.preRetirementRoi)
-            await this.postRetirementRoi.setValue(data.postRetirementRoi)
+            await this.setCurrencyFieldValue(this.additionalIncome, data.additionalIncome, 'Enter additional income')
+            await this.setFieldValue(this.retirementDuration, data.retirementDuration, 'Enter retirement duration')
+            await this.setFieldValue(this.retirementAnnualIncome, data.retirementAnnualIncome, 'Enter retirement annual income percentage')
+            await this.setFieldValue(this.preRetirementRoi, data.preRetirementRoi, 'Enter pre-retirement ROI')
+            await this.setFieldValue(this.postRetirementRoi, data.postRetirementRoi, 'Enter post-retirement ROI')
             if (data.expectedInflationRate) {
                 await this.configureInflation({ include: true, rate: data.expectedInflationRate })
             }

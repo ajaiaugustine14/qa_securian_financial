@@ -51,6 +51,8 @@ Shared base class inherited by all page objects. Provides common interaction and
 |---|---|
 | `open(path)` | Navigates to the given path relative to baseUrl |
 | `clickElement(element, stepMessage)` | Logs a step and clicks the element |
+| `setFieldValue(element, value, stepMessage)` | Logs a step and sets a value on a plain text/number input via `setValue()` |
+| `setCurrencyFieldValue(element, value, stepMessage)` | Logs a step and enters a value into a currency-masked input using click + Ctrl+A + `browser.keys()` to trigger the mask formatter |
 | `verifyVisible(element, stepMessage)` | Asserts the element is displayed |
 | `verifyHidden(element, stepMessage)` | Asserts the element is not displayed |
 | `waitUntilHidden(element, stepMessage)` | Waits for the element to disappear |

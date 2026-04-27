@@ -81,10 +81,7 @@ class RetirementCalculatorPage extends Page {
             if (options.include) {
                 await this.clickElement(this.includeSocialSecurityYes, 'Select Include Social Security: Yes')
                 if (options.override) {
-                    step(`Enter Social Security override amount: ${options.override}`)
-                    await this.socialSecurityOverride.click()
-                    await browser.keys(['Control', 'a'])
-                    await browser.keys(options.override.split(''))
+                    await this.setCurrencyFieldValue(this.socialSecurityOverride, options.override, `Enter Social Security override amount: ${options.override}`)
                 }
             } else {
                 await this.clickElement(this.includeSocialSecurityNo, 'Select Include Social Security: No')
@@ -125,21 +122,15 @@ class RetirementCalculatorPage extends Page {
     }) {
         try {
             step('Fill info form fields')
-            await this.currentAge.setValue(data.currentAge)
-            await this.retirementAge.setValue(data.retirementAge)
-            await this.currentAnnualIncome.click()
-            await browser.keys(['Control', 'a'])
-            await browser.keys(data.currentAnnualIncome.split(''))
+            await this.setFieldValue(this.currentAge, data.currentAge, 'Enter current age')
+            await this.setFieldValue(this.retirementAge, data.retirementAge, 'Enter retirement age')
+            await this.setCurrencyFieldValue(this.currentAnnualIncome, data.currentAnnualIncome, 'Enter current annual income')
             if (data.spouseAnnualIncome) {
-                await this.spouseAnnualIncome.click()
-                await browser.keys(['Control', 'a'])
-                await browser.keys(data.spouseAnnualIncome.split(''))
+                await this.setCurrencyFieldValue(this.spouseAnnualIncome, data.spouseAnnualIncome, 'Enter spouse annual income')
             }
-            await this.currentRetirementSavingsBalance.click()
-            await browser.keys(['Control', 'a'])
-            await browser.keys(data.retirementSavingsBalance.split(''))
-            await this.savingEachYearForRetirement.setValue(data.savingEachYearForRetirement)
-            await this.rateOfIncreaseInSavings.setValue(data.rateOfIncreaseInSavings)
+            await this.setCurrencyFieldValue(this.currentRetirementSavingsBalance, data.retirementSavingsBalance, 'Enter current retirement savings balance')
+            await this.setFieldValue(this.savingEachYearForRetirement, data.savingEachYearForRetirement, 'Enter saving each year for retirement')
+            await this.setFieldValue(this.rateOfIncreaseInSavings, data.rateOfIncreaseInSavings, 'Enter rate of increase in savings')
             if (data.socialSecurity !== undefined) {
                 await this.configureSocialSecurity({
                     include: data.socialSecurity.include,

@@ -30,6 +30,41 @@ export default class Page {
     }
 
     /**
+     * Logs a step and sets the value of the given input element.
+     * Use this for plain text/number inputs. For currency-masked fields use setCurrencyFieldValue() instead.
+     * @param element - Input element to set value on
+     * @param value - Value to enter
+     * @param stepMessage - Step label shown in the HTML report
+     */
+    protected async setFieldValue (element: ChainablePromiseElement, value: string, stepMessage: string) {
+        step(stepMessage)
+        try {
+            await element.setValue(value)
+        } catch (error) {
+            throw new Error(`Failed to set value — "${stepMessage}": ${(error as Error).message}`)
+        }
+    }
+
+    /**
+     * Logs a step and enters a value into a currency-masked input.
+     * Clicks the field, selects all existing content with Ctrl+A, then types the value
+     * character-by-character via browser.keys() to trigger the mask formatter correctly.
+     * @param element - Currency-masked input element
+     * @param value - Numeric value to enter e.g. '100000'
+     * @param stepMessage - Step label shown in the HTML report
+     */
+    protected async setCurrencyFieldValue (element: ChainablePromiseElement, value: string, stepMessage: string) {
+        step(stepMessage)
+        try {
+            await element.click()
+            await browser.keys(['Control', 'a'])
+            await browser.keys(value.split(''))
+        } catch (error) {
+            throw new Error(`Failed to set currency field value — "${stepMessage}": ${(error as Error).message}`)
+        }
+    }
+
+    /**
      * Logs a step and asserts the element is visible.
      * @param element - Element to assert on
      * @param stepMessage - Step label shown in the HTML report
