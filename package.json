@@ -2,7 +2,7 @@
   "name": "qa-securian-financial",
   "version": "1.0.0",
   "author": "ajaiaugustine14 <ajaiaugustine94@gmail.com>",
-  "description": "E2E test automation for Securian Financial Retirement Calculator using WebdriverIO and Jasmine",
+  "description": "Test automation for Securian Financial Retirement Calculator using WebdriverIO and Jasmine",
   "license": "MIT",
   "type": "module",
   "keywords": [
