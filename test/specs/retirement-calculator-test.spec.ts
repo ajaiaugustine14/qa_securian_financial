@@ -4,11 +4,11 @@
  * Covers all acceptance criteria for the retirement calculator form at:
  * https://www.securian.com/insights-tools/retirement-calculator.html
  *
- * Test data is loaded from: test/test-data/retirementCalculator.json
+ * Test data is loaded from: test/test-data/retirement-calculator.json
  */
 import RetirementCalculatorPage from '../pageobjects/preRetirementCalculatorForm.page.js'
 import DefaultCalculatorValuesPage from '../pageobjects/defaultCalculatorValues.page.js'
-import testData from '../test-data/retirementCalculator.json' with { type: 'json' }
+import testData from '../test-data/retirement-calculator.json' with { type: 'json' }
 
 describe('Securian Retirement Calculator', () => {
 

@@ -33,7 +33,7 @@ qa_securian_financial/
 │   ├── helpers/
 │   │   └── step.ts                                  # Step logger for HTML report
 │   └── test-data/
-│       └── retirementCalculator.json                # Test data
+│       └── retirement-calculator.json               # Test data
 ├── reports/                                         # Generated HTML reports
 ├── wdio.shared.conf.ts                              # Shared WebdriverIO config
 ├── wdio.local.conf.ts                               # Local Chrome config
@@ -123,7 +123,7 @@ File: `test/specs/retirement-calculator-test.spec.ts`
 
 ## Test Data
 
-All test data is stored in `test/test-data/retirementCalculator.json`.
+All test data is stored in `test/test-data/retirement-calculator.json`.
 
 ```json
 {
