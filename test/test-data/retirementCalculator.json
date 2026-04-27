@@ -52,5 +52,45 @@
         "retirementSavingsBalance": "500000",
         "savingEachYearForRetirement": "20",
         "rateOfIncreaseInSavings": "2"
+    },
+    "requiredFieldsWithoutRetirementAge": {
+        "currentAge": "30",
+        "retirementAge": "",
+        "currentAnnualIncome": "100000",
+        "retirementSavingsBalance": "500000",
+        "savingEachYearForRetirement": "20",
+        "rateOfIncreaseInSavings": "2"
+    },
+    "requiredFieldsWithoutIncome": {
+        "currentAge": "30",
+        "retirementAge": "68",
+        "currentAnnualIncome": "",
+        "retirementSavingsBalance": "500000",
+        "savingEachYearForRetirement": "20",
+        "rateOfIncreaseInSavings": "2"
+    },
+    "requiredFieldsWithoutSavingsBalance": {
+        "currentAge": "30",
+        "retirementAge": "68",
+        "currentAnnualIncome": "100000",
+        "retirementSavingsBalance": "",
+        "savingEachYearForRetirement": "20",
+        "rateOfIncreaseInSavings": "2"
+    },
+    "retirementAgeLessThanCurrentAge": {
+        "currentAge": "65",
+        "retirementAge": "30",
+        "currentAnnualIncome": "100000",
+        "retirementSavingsBalance": "500000",
+        "savingEachYearForRetirement": "20",
+        "rateOfIncreaseInSavings": "2"
+    },
+    "retirementAgeEqualToCurrentAge": {
+        "currentAge": "65",
+        "retirementAge": "65",
+        "currentAnnualIncome": "100000",
+        "retirementSavingsBalance": "500000",
+        "savingEachYearForRetirement": "20",
+        "rateOfIncreaseInSavings": "2"
     }
 }

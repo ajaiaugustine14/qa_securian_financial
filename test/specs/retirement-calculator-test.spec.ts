@@ -89,4 +89,51 @@ describe('Securian Retirement Calculator', () => {
         await RetirementCalculatorPage.fillForm(testData.requiredFieldsWithoutAge)
         await RetirementCalculatorPage.clickCalculateAndVerifyAlert()
     })
+
+    /**
+     * TC09 - Calculate with missing required field (retirement age)
+     * Verifies that omitting retirement age triggers the required-fields validation alert.
+     */
+    it('User should not be able to calculate without entering retirement age value', async () => {
+        await RetirementCalculatorPage.fillForm(testData.requiredFieldsWithoutRetirementAge)
+        await RetirementCalculatorPage.clickCalculateAndVerifyAlert()
+    })
+
+    /**
+     * TC10 - Calculate with missing required field (current annual income)
+     * Verifies that omitting annual income triggers the required-fields validation alert.
+     */
+    it('User should not be able to calculate without entering current annual income', async () => {
+        await RetirementCalculatorPage.fillForm(testData.requiredFieldsWithoutIncome)
+        await RetirementCalculatorPage.clickCalculateAndVerifyAlert()
+    })
+
+    /**
+     * TC11 - Calculate with missing required field (retirement savings balance)
+     * Verifies that omitting the savings balance triggers the required-fields validation alert.
+     */
+    it('User should not be able to calculate without entering retirement savings balance', async () => {
+        await RetirementCalculatorPage.fillForm(testData.requiredFieldsWithoutSavingsBalance)
+        await RetirementCalculatorPage.clickCalculateAndVerifyAlert()
+    })
+
+    /**
+     * TC12 - Retirement age less than current age (invalid business rule)
+     * Verifies the calculator does not produce results when retirement age is set
+     * lower than the current age.
+     */
+    it('User should not be able to calculate when retirement age is less than current age', async () => {
+        await RetirementCalculatorPage.fillForm(testData.retirementAgeLessThanCurrentAge)
+        await RetirementCalculatorPage.clickCalculateAndVerifyAlert()
+    })
+
+    /**
+     * TC13 - Retirement age equal to current age (boundary case)
+     * Verifies the calculator does not produce results when retirement age equals
+     * current age (zero years to retirement).
+     */
+    it('User should not be able to calculate when retirement age equals current age', async () => {
+        await RetirementCalculatorPage.fillForm(testData.retirementAgeEqualToCurrentAge)
+        await RetirementCalculatorPage.clickCalculateAndVerifyAlert()
+    })
 })

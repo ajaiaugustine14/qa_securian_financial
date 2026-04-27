@@ -24,83 +24,98 @@ End-to-end test suite for the [Securian Financial Retirement Calculator](https:/
 qa_securian_financial/
 ├── test/
 │   ├── pageobjects/
-│   │   ├── page.ts                              # Base page class
-│   │   ├── preRetirementCalculatorForm.page.ts  # Form fields & actions
-│   │   ├── defaultCalculatorValues.page.ts      # Adjust default values panel
-│   │   └── preRetirementCalculatorResult.page.ts# Results section
+│   │   ├── base.page.ts                             # Base page class (shared utilities)
+│   │   ├── preRetirementCalculatorForm.page.ts      # Form fields & actions
+│   │   ├── defaultCalculatorValues.page.ts          # Adjust default values panel
+│   │   └── preRetirementCalculatorResult.page.ts    # Results section
 │   ├── specs/
-│   │   └── retirementCalculatorTest.spec.ts     # Test cases
+│   │   └── retirement-calculator-test.spec.ts       # Test cases (TC01–TC13)
 │   ├── helpers/
-│   │   └── step.ts                              # Step logger for HTML report
+│   │   └── step.ts                                  # Step logger for HTML report
 │   └── test-data/
-│       └── retirementCalculator.json            # Test data
-├── reports/                                     # Generated HTML reports
-├── wdio.shared.conf.ts                          # Shared WebdriverIO config
-├── wdio.local.conf.ts                           # Local Chrome config
-└── wdio.sauce.conf.ts                           # Sauce Labs config
+│       └── retirementCalculator.json                # Test data
+├── reports/                                         # Generated HTML reports
+├── wdio.shared.conf.ts                              # Shared WebdriverIO config
+├── wdio.local.conf.ts                               # Local Chrome config
+└── wdio.sauce.conf.ts                               # Sauce Labs config
 ```
 
 ---
 
 ## Page Objects
 
-### `preRetirementCalculatorForm.page.ts`
-Handles the main calculator form.
+### `base.page.ts`
+Shared base class inherited by all page objects. Provides common interaction and assertion utilities.
 
 | Method | Description |
 |---|---|
-| `open()` | Navigates to the calculator page and accepts cookie popup |
-| `fillBasicInfo(data)` | Fills all basic info fields (age, income, savings) |
-| `clickCalculate()` | Clicks the Calculate button |
-| `openAdjustDefaults()` | Opens the Adjust default values panel |
-| `selectIncludeSocialSecurityYes()` | Selects Yes for social security |
-| `selectIncludeSocialSecurityNo()` | Selects No for social security |
-| `selectSingleStatus()` | Selects Single marital status |
-| `selectMarriedStatus()` | Selects Married marital status |
-| `fillSocialSecurityOverride(amount)` | Enters a custom social security amount |
-| `verifyRequiredFieldsAlertDisplayed()` | Asserts validation alert is shown with correct message |
-| `verifySocialSecurityOverrideVisible()` | Asserts SS override field is visible |
-| `verifySocialSecurityOverrideHidden()` | Asserts SS override field is hidden |
-| `verifySpouseIncomeVisible()` | Asserts spouse income field is visible |
-| `verifySpouseIncomeHidden()` | Asserts spouse income field is hidden |
+| `open(path)` | Navigates to the given path relative to baseUrl |
+| `clickElement(element, stepMessage)` | Logs a step and clicks the element |
+| `verifyVisible(element, stepMessage)` | Asserts the element is displayed |
+| `verifyHidden(element, stepMessage)` | Asserts the element is not displayed |
+| `waitUntilHidden(element, stepMessage)` | Waits for the element to disappear |
+
+### `preRetirementCalculatorForm.page.ts`
+Handles the main calculator form — inputs, toggles, validation, and cookie consent.
+
+| Method | Description |
+|---|---|
+| `open()` | Navigates to the calculator page and accepts cookie popup if present |
+| `fillForm(data)` | Fills all visible form fields from a data object |
+| `configureSocialSecurity(options)` | Selects SS Yes/No toggle; optionally fills the override amount |
+| `selectMaritalStatus(status)` | Selects `'single'` or `'married'` |
+| `clickCalculateAndVerifyResult()` | Clicks Calculate and asserts the Results section appears |
+| `clickCalculateAndVerifyAlert()` | Clicks Calculate and asserts the required-fields validation alert |
+| `verifySocialSecurityToggle()` | Toggles SS Yes then No and verifies override field shows then hides |
+| `acceptCookiesIfPresent()` | Dismisses the OneTrust cookie popup if it appears |
 
 ### `defaultCalculatorValues.page.ts`
-Handles the Adjust default values panel.
+Handles the Adjust Default Calculator Values panel.
 
 | Method | Description |
 |---|---|
-| `adjustDefaults(data)` | Fills additional income, duration, ROI fields |
-| `selectIncludeInflationYes()` | Selects Yes for include inflation toggle |
-| `selectIncludeInflationNo()` | Selects No for include inflation toggle |
-| `setExpectedInflationRate(rate)` | Enters expected inflation rate |
-| `saveChanges()` | Clicks Save changes |
-| `verifyDefaultsDialogOpen()` | Asserts defaults panel header is visible |
-| `verifyDefaultsDialogClosed()` | Waits for defaults panel to close |
-| `verifyInflationRateVisible()` | Asserts expected inflation rate field is visible |
-| `verifyInflationRateHidden()` | Asserts expected inflation rate field is hidden |
+| `open()` | Clicks "Adjust default values" and verifies the panel header is visible |
+| `adjustDefaults(data)` | Fills all default value fields; configures inflation inline when rate is provided |
+| `configureInflation(options)` | Selects Include Inflation Yes/No; optionally fills the inflation rate |
+| `saveChanges()` | Clicks "Save changes" and waits for the panel to close |
+| `clickSaveAndVerifyDefaultValuesSaved()` | Saves and verifies the Calculate button is enabled |
+| `verifyInflationToggle()` | Opens panel, toggles inflation Yes/No and verifies rate field shows then hides |
 
 ### `preRetirementCalculatorResult.page.ts`
-Handles the results section.
+Handles the results section displayed after a successful calculation.
 
 | Method | Description |
 |---|---|
-| `verifyResultsDisplayed()` | Asserts the Results heading is displayed |
+| `verifyResultsDisplayed()` | Asserts the Results heading is visible on the page |
 
 ---
 
 ## Test Cases
 
-File: `test/specs/retirementCalculatorTest.spec.ts`
+File: `test/specs/retirement-calculator-test.spec.ts`
 
-| # | Test | Description |
+### Positive Scenarios
+
+| TC | Test | Description |
 |---|---|---|
-| 1 | User should not able to calculate without filling all required fields | Clicks Calculate with empty form and verifies validation alert message |
-| 2 | Additional Social Security fields should display/hide based on Social Security benefits toggle | Toggles SS Yes/No and verifies override field visibility |
-| 3 | User should be able to submit form with all required fields filled in and see results | Fills required fields only and verifies results section appears |
-| 4 | User should be able to submit form with all fields filled in | Fills all fields including spouse income, married status and SS override |
-| 5 | Inflation rate field should display/hide based on include inflation toggle in default values | Opens defaults panel, toggles inflation Yes/No and verifies rate field visibility |
-| 6 | User should be able to update default calculator values | Opens defaults panel, fills all default values, saves and verifies panel closes |
-| 7 | User should be able to calculate with adjusted default values and see results | Full E2E — fills basic info, updates defaults with inflation, calculates and verifies results |
+| TC01 | User should not able to calculate without filling all required fields | Clicks Calculate on an empty form and verifies the required-fields validation alert |
+| TC02 | Additional Social Security fields should display/hide based on Social Security benefits toggle | Toggles SS Yes/No and verifies the override field shows then hides |
+| TC03 | User should be able to submit form with all required fields filled in and see results | Fills only required fields and verifies the Results section appears |
+| TC04 | User should be able to submit form with all fields filled in | Fills all fields including spouse income, married status, and SS override; verifies results |
+| TC05 | Inflation rate field should display/hide based on include inflation toggle in default values | Opens defaults panel, toggles inflation Yes/No, and verifies the rate field shows then hides |
+| TC06 | User should be able to update default calculator values | Opens defaults panel, fills all default values, saves, and verifies the panel closes |
+| TC07 | User should be able to calculate with adjusted default values and see results | Full E2E — fills basic info, updates defaults with inflation rate, calculates, and verifies results |
+
+### Negative Scenarios
+
+| TC | Test | Description |
+|---|---|---|
+| TC08 | User should not able to calculate without entering current age value | Omits current age and verifies the required-fields validation alert |
+| TC09 | User should not be able to calculate without entering retirement age value | Omits retirement age and verifies the required-fields validation alert |
+| TC10 | User should not be able to calculate without entering current annual income | Omits annual income and verifies the required-fields validation alert |
+| TC11 | User should not be able to calculate without entering retirement savings balance | Omits savings balance and verifies the required-fields validation alert |
+| TC12 | User should not be able to calculate when retirement age is less than current age | Sets retirement age below current age (invalid business rule) and verifies the validation alert |
+| TC13 | User should not be able to calculate when retirement age equals current age | Sets retirement age equal to current age (zero years to retirement) and verifies the validation alert |
 
 ---
 
@@ -110,17 +125,23 @@ All test data is stored in `test/test-data/retirementCalculator.json`.
 
 ```json
 {
-  "requiredFieldsOnly": { ... },       // Used in test 3
-  "allFields": { ... },                // Used in test 4
-  "defaultCalculatorValues": { ... },  // Used in test 6
+  "requiredFieldsOnly": { ... },                  // TC03 — required fields only
+  "allFields": { ... },                           // TC04 — all fields including SS override & married status
+  "defaultCalculatorValues": { ... },             // TC06 — default panel values
   "withAdjustedDefaults": {
-    "basicInfo": { ... },              // Used in test 7
-    "defaults": { ... }                // Used in test 7
-  }
+    "basicInfo": { ... },                         // TC07 — main form data
+    "defaults": { ... }                           // TC07 — default panel data
+  },
+  "requiredFieldsWithoutAge": { ... },            // TC08 — current age left blank
+  "requiredFieldsWithoutRetirementAge": { ... },  // TC09 — retirement age left blank
+  "requiredFieldsWithoutIncome": { ... },         // TC10 — annual income left blank
+  "requiredFieldsWithoutSavingsBalance": { ... }, // TC11 — savings balance left blank
+  "retirementAgeLessThanCurrentAge": { ... },     // TC12 — retirement age < current age
+  "retirementAgeEqualToCurrentAge": { ... }       // TC13 — retirement age = current age
 }
 ```
 
-To change test inputs, update the JSON file — no changes to spec files needed.
+To change test inputs, update the JSON file — no changes to spec files are needed.
 
 ---
 
@@ -141,7 +162,7 @@ npm run test:local
 
 Run only the retirement calculator spec:
 ```bash
-npx wdio run wdio.local.conf.ts --spec test/specs/retirementCalculatorTest.spec.ts
+npx wdio run wdio.local.conf.ts --spec test/specs/retirement-calculator-test.spec.ts
 ```
 
 ---
