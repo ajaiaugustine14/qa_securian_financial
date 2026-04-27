@@ -15,7 +15,9 @@
         "retirementSavingsBalance": "500000",
         "savingEachYearForRetirement": "20",
         "rateOfIncreaseInSavings": "2",
-        "socialSecurityOverride": "1500"
+        "socialSecurity": { "include": true },
+        "socialSecurityOverride": "1500",
+        "maritalStatus": "married"
     },
     "defaultCalculatorValues": {
         "additionalIncome": "1000",
@@ -42,5 +44,13 @@
             "postRetirementRoi": "4",
             "expectedInflationRate": "3"
         }
+    },
+    "requiredFieldsWithoutAge": {
+        "currentAge": "",
+        "retirementAge": "68",
+        "currentAnnualIncome": "100000",
+        "retirementSavingsBalance": "500000",
+        "savingEachYearForRetirement": "20",
+        "rateOfIncreaseInSavings": "2"
     }
 }
